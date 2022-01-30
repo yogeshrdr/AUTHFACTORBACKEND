@@ -11,7 +11,8 @@ exports.sendwhatsapp = (phone,otp) => {
          from: 'whatsapp:+14155238886',
          to: `whatsapp:${phone}`,
       })
-      .then(message => console.log(message.sid));
+      .then(message => console.log(message.sid))
+      .done();
 }
 
 exports.sendsms = (phone,otp) => {
@@ -21,5 +22,6 @@ exports.sendsms = (phone,otp) => {
          from: process.env.TWILIO_PHONE_NUMBER,
          to: phone,
       })
-      .then(message => console.log(message.sid));
+      .then(message => console.log(message.sid))
+      .done();
 }
