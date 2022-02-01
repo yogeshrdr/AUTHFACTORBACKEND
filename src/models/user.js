@@ -6,10 +6,10 @@ require('dotenv').config();
 
 
 const UserSchema = new Schema({
-   phone: {
+   email: {
       type: String,
       unique: true,
-      required: 'Phone Number is Required'
+      required: 'Email is Required'
    },
    otp:{
       type:String,
@@ -27,7 +27,7 @@ const UserSchema = new Schema({
 UserSchema.methods.generateJWT = function () {
    let payload = {
       id: this._id,
-      phone: this.phone,
+      email: this.email,
    };
 
    return jwt.sign(payload, process.env.JWT_SECRET, {});
