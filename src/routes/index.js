@@ -39,7 +39,7 @@ module.exports = function (app) {
    });
 
 
-   app.get('/matchOtp', async (req, res) => {
+   app.post('/matchOtp', async (req, res) => {
       try {
          var { email, otp } = req.body;
          const user = await User.findOne({ email });
