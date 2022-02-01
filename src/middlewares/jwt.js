@@ -13,7 +13,7 @@ module.exports = passport => {
       new JwtStrategy(opts, (jwt_payload, done) => {
          UserRegister.findById(jwt_payload.id)
             .then(user => {
-               if (user.phone === jwt_payload.phone) {
+               if (user.email === jwt_payload.email) {
                   return done(null, user);
                }
                return done(null, false);
