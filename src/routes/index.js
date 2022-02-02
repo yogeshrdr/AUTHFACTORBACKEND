@@ -35,7 +35,7 @@ module.exports = function (app) {
          }
 
       } catch (error) {
-         res.status(500).json({ success: false, message: "Server Error"})
+         res.status(500).send({ success: false, message: "Server Error"})
       }
 
    });
@@ -47,11 +47,11 @@ module.exports = function (app) {
          const user = await User.findOne({ email });
          otp = otp.toString();
          if (!user.compareOtp(otp))
-            return res.status(401).json({ success: false, message: 'Invalid Otp' });
+            return res.status(401).send({ success: false, message: 'Invalid Otp' });
 
-         res.status(200).json({ success: true , token:user.generateJWT(),user });
+         res.status(200).send({ success: true , token:user.generateJWT(),user });
       } catch (error) {
-         res.status(500).json({ success: false, message: 'Server Error', messages: error.message });
+         res.status(500).send({ success: false, message: 'Server Error', messages: error.message });
       }
    });
 };
