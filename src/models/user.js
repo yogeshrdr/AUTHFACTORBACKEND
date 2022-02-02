@@ -4,6 +4,26 @@ const Schema = mongoose.Schema;
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+const AccountSchema = new Schema({
+   name:{
+      type: String,
+      required: 'Name is Required'
+   },
+   secret:{
+      type: String,
+      required: 'Secret is Required'
+   },
+   period:{
+      type: Number,
+      required: 'period is Required'
+   },
+   imageurl:{
+      type: String,
+   },
+   issuer:{
+      type: String,
+   }
+})
 
 const UserSchema = new Schema({
    email: {
@@ -14,12 +34,9 @@ const UserSchema = new Schema({
    otp:{
       type:String,
    },
-   // sites:[{
-   //    sitename:{
-   //       type:String,
-   //    },
-      
-   // }]
+   account:[{
+      type: AccountSchema,
+   }]
 
 }, { timestamps: true });
 

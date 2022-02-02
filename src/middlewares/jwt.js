@@ -11,7 +11,7 @@ const opts = {
 module.exports = passport => {
    passport.use(
       new JwtStrategy(opts, (jwt_payload, done) => {
-         UserRegister.findById(jwt_payload.id)
+         User.findById(jwt_payload.id)
             .then(user => {
                if (user.email === jwt_payload.email) {
                   return done(null, user);

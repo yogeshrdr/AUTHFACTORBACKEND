@@ -3,6 +3,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const { makeOtp } = require('../utils/otp');
 const {sendemail } = require('../utils/sendotp');
+const authenticate = require('../middlewares/authenticate');
 
 module.exports = function (app) {
    app.get('/', (req, res) => {
@@ -50,6 +51,59 @@ module.exports = function (app) {
             return res.status(200).send({ success: false, message: 'Invalid Otp' });
 
          res.status(200).send({ success: true , token:user.generateJWT(),user });
+      } catch (error) {
+         res.status(500).send({ success: false, message: 'Server Error', messages: error.message });
+      }
+   });
+
+   app.get('/userdata',authenticate, async(req, res) => {
+      try {
+         res.status(200).send({ success: true , user: req.user});
+      } catch (error) {
+         res.status(500).send({ success: false, message: 'Server Error', messages: error.message });
+      }
+   });
+
+   app.post('/addAccount',authenticate, async(req, res) => {
+      try {
+         const user = await User.findById(req.user.id);
+         if (!user)
+            return res.status(200).send({ success: false, message: 'User Not Found'});
+         
+         const {name, secret, period, issuer} = req.body;
+         const imageurl = 'imgurl';
+
+         for(var i=0;i<user.account.length;i++){
+            if(user.account[i].secret == secret){
+               return res.status(200).send({ success: false, message: 'Already Exists Account'});
+            }
+         }
+
+         user.account.push({name, secret, period, issuer, imageurl});
+         const updateuser = await user.save();
+
+         res.status(200).send({ success: true , user: updateuser});
+      } catch (error) {
+         res.status(500).send({ success: false, message: 'Server Error', messages: error.message });
+      }
+   });
+
+   app.post('/deleteAccount',authenticate, async(req, res) => {
+      try {
+         const {accountId} = req.body;
+         const user = await User.findById(req.user.id);
+         if (!user)
+            return res.status(200).send({ success: false, message: 'User Not Found'});
+         
+         for(var i=0;i<user.account.length;i++){
+            if(user.account[i]._id == accountId){
+               await user.account.pull(accountId);
+            }
+         }
+
+         const updateuser = await user.save();
+         res.status(200).send({ success: true , user: updateuser});
+
       } catch (error) {
          res.status(500).send({ success: false, message: 'Server Error', messages: error.message });
       }
