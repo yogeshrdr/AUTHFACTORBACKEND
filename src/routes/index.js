@@ -47,7 +47,7 @@ module.exports = function (app) {
          const user = await User.findOne({ email });
          otp = otp.toString();
          if (!user.compareOtp(otp))
-            return res.status(401).send({ success: false, message: 'Invalid Otp' });
+            return res.status(200).send({ success: false, message: 'Invalid Otp' });
 
          res.status(200).send({ success: true , token:user.generateJWT(),user });
       } catch (error) {
