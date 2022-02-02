@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const { makeOtp } = require('../utils/otp');
 const {sendemail } = require('../utils/sendotp');
 const authenticate = require('../middlewares/authenticate');
+const ClearbitLogo = require('clearbit-logo');
 
 module.exports = function (app) {
    app.get('/', (req, res) => {
@@ -70,9 +71,9 @@ module.exports = function (app) {
          if (!user)
             return res.status(200).send({ success: false, message: 'User Not Found'});
          
-         const {name, secret, period, issuer} = req.body;
-         const imageurl = 'imgurl';
+         const {name, secret, period, issuer, imageurl} = req.body;
 
+         
          for(var i=0;i<user.account.length;i++){
             if(user.account[i].secret == secret){
                return res.status(200).send({ success: false, message: 'Already Exists Account'});
@@ -108,4 +109,19 @@ module.exports = function (app) {
          res.status(500).send({ success: false, message: 'Server Error', messages: error.message });
       }
    });
+
+
+   app.post('/companyName', async(req, res) => {
+      const {issuer} = req.body;
+
+      var imageurl = "https://i.ibb.co/6tqWrTG/qr.png";
+      let logo = new ClearbitLogo;
+      const data  = await logo.topSuggestion(issuer)
+      
+      if(data){
+         imageurl = data.logo;
+      }
+      
+      res.status(200).send({ success: true , imageurl});
+   })
 };
