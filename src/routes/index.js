@@ -10,6 +10,8 @@ module.exports = function (app) {
       
    });
 
+   //login
+
    app.post('/login', async (req, res) => {
       try {
          const { email} = req.body;
