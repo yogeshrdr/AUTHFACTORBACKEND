@@ -139,7 +139,7 @@ DELETE AUTHETICATOR APP FROM YOUR ACCOUNT
   accountId: _id
 ```
 
-![Alt Text](https://media.giphy.com/media/bvj7AzJGa0dcbbVKwH/giphy.gif?cid=790b76111a5a1183a9353b62d2ed4937a9fce45bd54052d4&rid=giphy.gif&ct=g)
+![Alt Text](https://media.giphy.com/media/bvj7AzJGa0dcbbVKwH/giphy.gif?cid=790b76111a5a1183a9353b62d2ed4937a9fce45bd54052d4&rid=giphy.gif&ct=g) 
 
 
 
