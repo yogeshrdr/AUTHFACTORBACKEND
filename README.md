@@ -9,7 +9,7 @@
   </a>
 
   <h3 align="center">AUTH FACTOR</h3>
-   <a href="https://github.com/yogeshrdr/AUTHFACTOR">AUTH FACTOR APP REPO</a>
+   <a href="https://github.com/yogeshrdr/AUTHFACTOR">AUTH FACTOR APP REPO </a>
   <p align="center">
     A TWO FACTOR AUTHETICATOR
     <br />
