@@ -1,20 +1,45 @@
-const sgMail = require('@sendgrid/mail');
+const nodemailer = require('nodemailer');
+const {google} = require('googleapis');
 require('dotenv').config();
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 
-exports.sendemail = async (email, otp) => {
-   try{
-      const msg = {
-         to: email,
-         from: 'crystaleyes901@gmail.com',
-         subject: 'OTP for Authfactor',
-         text: 'OTP for Authfactor is ',
-         html: `OTP for Authfactor is:<strong>${otp}</strong>`,
-      }
-      await sgMail.send(msg);
-      return true;
-   }catch(error){
-      return false;
-   }
+const createTransporter = async () => {
+    const oAuth2Client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.REDIRECT_URI)
+    oAuth2Client.setCredentials({ refresh_token : process.env.REFRESH_TOKEN})
+
+    const accessToken = await new Promise((resolve, reject) => {
+        oAuth2Client.getAccessToken((err, token) => {
+            if (err) {
+                reject("Failed to create access token :(");
+            }
+            resolve(token);
+        });
+    });
+
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            type: "OAuth2",
+            user: process.env.EMAIL,
+            accessToken,
+            clientId: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            refreshToken: process.env.REFRESH_TOKEN
+        }
+    });
+
+return transporter;
+};
+
+const sendEmail = async (emailOptions) => {
+    try {
+        let emailTransporter = await createTransporter();
+        await emailTransporter.sendMail(emailOptions); 
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+module.exports = {
+sendEmail
 }

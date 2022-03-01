@@ -16,8 +16,10 @@
     "cors": "^2.8.5",
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
+    "googleapis": "^95.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.8",
+    "nodemailer": "^6.7.2",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0"
   },

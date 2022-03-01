@@ -2,7 +2,7 @@ const router = require('express').Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const { makeOtp } = require('../utils/otp');
-const {sendemail } = require('../utils/sendotp');
+const {sendEmail } = require('../utils/sendotp');
 const authenticate = require('../middlewares/authenticate');
 const ClearbitLogo = require('clearbit-logo');
 
@@ -20,10 +20,12 @@ module.exports = function (app) {
          const getuser = await User.findOne({ email });
          let otp = await makeOtp();
          otp = otp.toString();
-         const mail = await sendemail(email,otp) ;
-         if(!mail){
-            res.status(400).send({ success: false, message: "Email Not Found" });
-         }
+         let subject = "AuthFactor OTP";
+         let to = email;
+         let from = process.env.EMAIL;
+         let text = `Your OTP is ${otp}`;
+         sendEmail({ subject, text, to , from});
+         
          otp = await bcrypt.hashSync(otp, 10);
          if (!getuser) {
             const newUser = new User({ email, otp });
